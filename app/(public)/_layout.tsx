@@ -1,4 +1,5 @@
 import { Stack } from "expo-router";
+import "../../global.css";
 
 export default function PublicLayout() {
   return (
@@ -7,6 +8,10 @@ export default function PublicLayout() {
         headerShown: false,
         animation: "fade",
       }}
-    />
+    >
+      <Stack.Screen name="welcome" />
+      <Stack.Screen name="auth/login" />
+      <Stack.Screen name="auth/register" />
+    </Stack>
   );
 }

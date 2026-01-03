@@ -1,12 +1,7 @@
-import { Stack } from "expo-router";
-import { StatusBar } from "expo-status-bar";
+import { Slot } from "expo-router";
 import "../global.css";
 
 export default function RootLayout() {
-  return (
-    <>
-      <StatusBar hidden />
-      <Stack screenOptions={{ headerShown: false }} />
-    </>
-  );
+  // Using Slot tells Expo to just render the child (index or public group)
+  return <Slot />;
 }

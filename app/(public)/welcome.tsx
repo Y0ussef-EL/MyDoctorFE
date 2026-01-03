@@ -7,8 +7,9 @@ export default function Welcome() {
   const router = useRouter();
 
   return (
-    <LinearGradient colors={["#1e40af", "#312e81"]} className="flex-1">
-      <SafeAreaView className="flex-1">
+    // FIX: Use style={{flex:1}} instead of className for Native Modules on iOS
+    <LinearGradient colors={["#1e40af", "#312e81"]} style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1 }}>
         <View className="flex-1 justify-center px-6">
           <Text className="text-white text-4xl font-bold text-center mb-4">
             MY DOCTORe
@@ -19,17 +20,16 @@ export default function Welcome() {
           </Text>
 
           <TouchableOpacity
-            className=" bg-white py-3 rounded-xl mb-4 max-w-fit w-fit mx-auto px-4"
-            onPress={() => router.push("/auth/login")}
+            className="bg-white py-3 rounded-xl mb-4 self-center px-12"
+            onPress={() => router.push("/(public)/auth/login")}
           >
             <Text className="text-indigo-600 text-center text-lg font-semibold">
-              Logine
+              Login
             </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            className=""
-            onPress={() => router.push("/auth/register")}
+            onPress={() => router.push("/(public)/auth/register")}
           >
             <Text className="text-white underline text-center text-lg font-semibold">
               Create an account
