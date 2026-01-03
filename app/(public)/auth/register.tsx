@@ -1,20 +1,55 @@
 import { LinearGradient } from "expo-linear-gradient";
+import { Eye, EyeOff, Ellipsis } from "lucide-react-native";
+import { useState } from "react";
 import {
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  Modal,
+  Alert,
+  Pressable,
+  StyleSheet,
+  FlatList,
 } from "react-native";
-import { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
+import RadioGroup, { RadioOption } from "../../../components/RadioGroup";
+import { BlurView } from "expo-blur";
 
 export default function Register() {
-    const [username, setUsername] = useState("");
-    return (
-        <LinearGradient colors={["#1e40af", "#312e81"]} style={{ flex: 1 }}>
+  const [username, setUsername] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [pSecure, setPSecure] = useState(true);
+  const [cpSecure, setCPSecure] = useState(true);
+  const [isEnabled, setIsEnabled] = useState(false);
+  const [role, setRole] = useState("patient");
+  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+  const roleOptions: RadioOption[] = [
+    { label: "Patient", value: "PATIENT" },
+    { label: "Doctor", value: "DOCTOR" },
+  ];
+  const [modalVisible, setModalVisible] = useState(false);
+  const [specialization, setSpecialization] = useState("");
+  const specializations = [
+    "General Practitioner",
+    "Cardiologist",
+    "Dermatologist",
+    "Neurologist",
+    "Pediatrician",
+    "Psychiatrist",
+    "Surgeon",
+    "Orthopedist",
+  ];
+
+  return (
+    <LinearGradient colors={["#1e40af", "#312e81"]} style={{ flex: 1 }}>
       <SafeAreaView style={{ flex: 1 }}>
         <KeyboardAvoidingView
           style={{ flex: 1 }}
@@ -33,48 +68,147 @@ export default function Register() {
                 MY DOCTOR
               </Text>
 
-              <Text className="text-white text-center text-base mb-12 opacity-90">
+              <Text className="text-white text-center text-base mb-6 opacity-90">
                 Your healthcare companion — doctors & patients, connected.
               </Text>
+              <View className="flex-row items-center mx-4 py-3">
+                <Text className="text-white mr-6">Register as:</Text>
+                <RadioGroup
+                  options={roleOptions}
+                  selectedValue={role}
+                  onValueChange={setRole}
+                />
+              </View>
+
               <TextInput
                 className="mb-4 border-b border-white text-white mx-4 py-3"
                 placeholder="First Name"
                 placeholderTextColor="#fff"
-                value={username}
-                onChangeText={setUsername}
+                value={firstName}
+                onChangeText={setFirstName}
               />
               <TextInput
                 className="mb-4 border-b border-white text-white mx-4 py-3"
                 placeholder="Last Name"
                 placeholderTextColor="#fff"
-                value={username}
-                onChangeText={setUsername}
+                value={lastName}
+                onChangeText={setLastName}
               />
               <TextInput
                 className="mb-4 border-b border-white text-white mx-4 py-3"
-                placeholder="Username"
+                placeholder="Email"
                 placeholderTextColor="#fff"
-                value={username}
-                onChangeText={setUsername}
+                value={email}
+                onChangeText={setEmail}
               />
-              <TextInput
-                className="mb-4 border-b border-white text-white mx-4 py-3"
-                placeholder="Username"
-                placeholderTextColor="#fff"
-                value={username}
-                onChangeText={setUsername}
-              />
-              <TextInput
-                className="mb-4 border-b border-white text-white mx-4 py-3"
-                placeholder="Username"
-                placeholderTextColor="#fff"
-                value={username}
-                onChangeText={setUsername}
-              />
+
+              <View className="relative">
+                <TextInput
+                  className="mb-4 border-b border-white text-white mx-4 py-3"
+                  placeholder="Password"
+                  placeholderTextColor="#fff"
+                  value={password}
+                  secureTextEntry={pSecure}
+                  onChangeText={setPassword}
+                />
+                <TouchableOpacity
+                  onPress={() => setPSecure(!pSecure)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 mr-2"
+                >
+                  {pSecure ? (
+                    <Eye size={20} color="#fff" />
+                  ) : (
+                    <EyeOff size={20} color="#fff" />
+                  )}
+                </TouchableOpacity>
               </View>
-            </ScrollView>
-            </KeyboardAvoidingView>
-          </SafeAreaView>
-          </LinearGradient>
-              )
+
+              <View>
+                <TextInput
+                  className="mb-4 border-b border-white text-white mx-4 py-3"
+                  placeholder="Confirm password"
+                  placeholderTextColor="#fff"
+                  value={username}
+                  secureTextEntry={cpSecure}
+                  onChangeText={setUsername}
+                />
+                <TouchableOpacity
+                  onPress={() => setCPSecure(!cpSecure)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 mr-2"
+                >
+                  {cpSecure ? (
+                    <Eye size={20} color="#fff" />
+                  ) : (
+                    <EyeOff size={20} color="#fff" />
+                  )}
+                </TouchableOpacity>
+              </View>
+              <View>
+                <Text className="mb-4 border-b border-white text-white mx-4 py-3">
+                  {specialization || "Specialization"}
+                </Text>
+                <TouchableOpacity
+                  onPress={() => setModalVisible(true)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 mr-2"
+                >
+                  <Ellipsis size={20} color="#fff" />
+                </TouchableOpacity>
+              </View>
+
+              <Modal
+  animationType="fade"
+  transparent
+  visible={modalVisible}
+  onRequestClose={() => setModalVisible(false)}
+>
+  <LinearGradient colors={["#1e40af", "#312e81"]} style={{ flex: 1 }}>
+  <View className="flex-1 justify-center items-center px-6">
+    
+    <BlurView
+      intensity={20}
+      tint="light"
+      className="w-full max-h-[50%] rounded-full overflow-hidden shadow-2xl"
+    >
+      <View className="p-6">
+        <Text className="text-xl font-bold mb-4 text-center text-white">
+          Specialization
+        </Text>
+
+        <FlatList
+          data={specializations}
+          keyExtractor={(item) => item}
+          showsVerticalScrollIndicator={false}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              className="py-4 border-b border-white/10"
+              onPress={() => {
+                setSpecialization(item);
+                setModalVisible(false);
+              }}
+            >
+              <Text
+              style={{ color: "#fff" }}
+                className={`text-lg ${
+                  specialization === item
+                    ? "font-bold"
+                    : "font-extralight"
+                }`}
+              >
+                {item}
+              </Text>
+            </TouchableOpacity>
+          )}
+        />
+      </View>
+    </BlurView>
+
+  </View>
+  </LinearGradient>
+</Modal>
+            </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    </LinearGradient>
+  );
 }

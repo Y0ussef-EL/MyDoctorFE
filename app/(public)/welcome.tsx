@@ -28,13 +28,13 @@ export default function Welcome() {
           </TouchableOpacity>
 
           <TouchableOpacity
-            className=""
-            onPress={() => router.push("/auth/register")}
-          >
-            <Text className="text-white underline text-center text-lg font-semibold">
-              Create an account
-            </Text>
-          </TouchableOpacity>
+                className=""
+                onPress={() => router.push("/auth/register")}
+              >
+                <Text className="text-white text-center mt-4 font-extralight">
+                  Create an account
+                </Text>
+              </TouchableOpacity>
         </View>
       </SafeAreaView>
     </LinearGradient>
