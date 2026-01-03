@@ -1,16 +1,12 @@
 import { Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Index() {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#535d7dff",
-      }}
+    <SafeAreaView className="flex-1 justify-center items-center bg-blue-900">
+    <View className="p-4 bg-white rounded-lg shadow-lg"
     >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
-    </View>
+      <Text className="text-red-600">Edit app/index.tsx to edit this screen.</Text>
+    </View></SafeAreaView>
   );
 }
