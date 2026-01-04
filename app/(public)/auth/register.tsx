@@ -62,7 +62,7 @@ const roleOptions: RadioOption<"PATIENT" | "DOCTOR">[] = [
   specialization: role === "DOCTOR" ? specialization : null,
 }
     console.log("Registering user with data:", payload);
-    router.push("/auth/login");
+    router.replace("/auth/login");
 
 };
 
