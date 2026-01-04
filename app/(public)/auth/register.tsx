@@ -10,9 +10,6 @@ import {
   TouchableOpacity,
   View,
   Modal,
-  Alert,
-  Pressable,
-  StyleSheet,
   FlatList,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -47,6 +44,19 @@ export default function Register() {
     "Surgeon",
     "Orthopedist",
   ];
+  const locked = role !== "DOCTOR";
+
+  const handleRegister = () => {
+  const payload = {
+  username,
+  firstName,
+  lastName,
+  email,
+  password,
+  role,
+  specialization: role === "DOCTOR" ? specialization : null,
+}
+    console.log("Registering user with data:", payload);};
 
   return (
     <LinearGradient colors={["#1e40af", "#312e81"]} style={{ flex: 1 }}>
@@ -101,6 +111,13 @@ export default function Register() {
                 value={email}
                 onChangeText={setEmail}
               />
+              <TextInput
+                className="mb-4 border-b border-white text-white mx-4 py-3"
+                placeholder="Username"
+                placeholderTextColor="#fff"
+                value={username}
+                onChangeText={setUsername}
+              />
 
               <View className="relative">
                 <TextInput
@@ -122,90 +139,91 @@ export default function Register() {
                   )}
                 </TouchableOpacity>
               </View>
+              {role === "DOCTOR" && (
+                <View>
+                  <Text className="mb-4 border-b border-white text-white mx-4 py-3 px-2">
+                    {specialization || "Specialization"}
+                  </Text>
 
-              <View>
-                <TextInput
-                  className="mb-4 border-b border-white text-white mx-4 py-3"
-                  placeholder="Confirm password"
-                  placeholderTextColor="#fff"
-                  value={username}
-                  secureTextEntry={cpSecure}
-                  onChangeText={setUsername}
-                />
-                <TouchableOpacity
-                  onPress={() => setCPSecure(!cpSecure)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 mr-2"
-                >
-                  {cpSecure ? (
-                    <Eye size={20} color="#fff" />
-                  ) : (
-                    <EyeOff size={20} color="#fff" />
-                  )}
-                </TouchableOpacity>
-              </View>
-              <View>
-                <Text className="mb-4 border-b border-white text-white mx-4 py-3">
-                  {specialization || "Specialization"}
-                </Text>
-                <TouchableOpacity
-                  onPress={() => setModalVisible(true)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 mr-2"
-                >
-                  <Ellipsis size={20} color="#fff" />
-                </TouchableOpacity>
-              </View>
+                  <TouchableOpacity
+                    onPress={() => setModalVisible(true)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 mr-2"
+                  >
+                    <Ellipsis size={20} color="#fff" />
+                  </TouchableOpacity>
+                </View>
+              )}
 
               <Modal
-  animationType="fade"
-  transparent
-  visible={modalVisible}
-  onRequestClose={() => setModalVisible(false)}
->
-  <LinearGradient colors={["#1e40af", "#312e81"]} style={{ flex: 1 }}>
-  <View className="flex-1 justify-center items-center px-6">
-    
-    <BlurView
-      intensity={20}
-      tint="light"
-      className="w-full max-h-[50%] rounded-full overflow-hidden shadow-2xl"
-    >
-      <View className="p-6">
-        <Text className="text-xl font-bold mb-4 text-center text-white">
-          Specialization
-        </Text>
-
-        <FlatList
-          data={specializations}
-          keyExtractor={(item) => item}
-          showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              className="py-4 border-b border-white/10"
-              onPress={() => {
-                setSpecialization(item);
-                setModalVisible(false);
-              }}
-            >
-              <Text
-              style={{ color: "#fff" }}
-                className={`text-lg ${
-                  specialization === item
-                    ? "font-bold"
-                    : "font-extralight"
-                }`}
+                animationType="fade"
+                transparent
+                visible={modalVisible}
+                onRequestClose={() => setModalVisible(false)}
               >
-                {item}
+                <LinearGradient
+                  colors={["#1e40af", "#312e81"]}
+                  style={{ flex: 1 }}
+                >
+                  <View className="flex-1 justify-center  items-center px-6">
+                    <BlurView
+                      intensity={20}
+                      tint="light"
+                      className="w-full max-h-[50%] rounded-3xl overflow-hidden shadow-2xl"
+                    >
+                      <View className="p-6">
+                        <Text className="text-xl font-bold mb-4 text-center text-white">
+                          Specialization
+                        </Text>
+
+                        <FlatList
+                          data={specializations}
+                          keyExtractor={(item) => item}
+                          showsVerticalScrollIndicator={false}
+                          renderItem={({ item }) => (
+                            <TouchableOpacity
+                              className="py-4 border-b border-white/10"
+                              onPress={() => {
+                                setSpecialization(item);
+                                setModalVisible(false);
+                              }}
+                            >
+                              <Text
+                                style={{ color: "#fff" }}
+                                className={`text-lg ${
+                                  specialization === item
+                                    ? "font-bold"
+                                    : "font-extralight"
+                                }`}
+                              >
+                                {item}
+                              </Text>
+                            </TouchableOpacity>
+                          )}
+                        />
+                      </View>
+                    </BlurView>
+                  </View>
+                </LinearGradient>
+              </Modal>
+            </View>
+            <TouchableOpacity
+              className="bg-white w-[30%] mx-auto mt-6 py-3 rounded-lg"
+              onPress={() =>
+                console.log(
+                  firstName,
+                  lastName,
+                  email,
+                  username,
+                  password,
+                  role,
+                  specialization
+                )
+              }
+            >
+              <Text className="text-indigo-600 text-center text-lg font-bold">
+                Register
               </Text>
             </TouchableOpacity>
-          )}
-        />
-      </View>
-    </BlurView>
-
-  </View>
-  </LinearGradient>
-</Modal>
-            </View>
           </ScrollView>
         </KeyboardAvoidingView>
       </SafeAreaView>
