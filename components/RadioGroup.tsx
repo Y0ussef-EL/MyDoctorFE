@@ -1,17 +1,17 @@
 import { View, Text, TouchableOpacity } from "react-native";
 
-export interface RadioOption {
+export interface RadioOption<T extends string> {
   label: string;
-  value: string;
+  value: T;
 }
 
-interface RadioGroupProps {
-  options: RadioOption[];
-  selectedValue: string;
-  onValueChange: (value: string) => void;
+interface RadioGroupProps<T extends string> {
+  options: RadioOption<T>[];
+  selectedValue: T;
+  onValueChange: (value: T) => void;
 }
 
-export default function RadioGroup({ options, selectedValue, onValueChange }: RadioGroupProps) {
+export default function RadioGroup<T extends string>({ options, selectedValue, onValueChange }: RadioGroupProps<T>) {
   return (
     <View className="flex-row self-start flex-wrap gap-4"> 
       {options.map((option) => {

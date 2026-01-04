@@ -24,11 +24,11 @@ export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [pSecure, setPSecure] = useState(true);
-  const [role, setRole] = useState("patient");
-  const roleOptions: RadioOption[] = [
-    { label: "Patient", value: "PATIENT" },
-    { label: "Doctor", value: "DOCTOR" },
-  ];
+  const [role, setRole] = useState<"PATIENT" | "DOCTOR">("PATIENT");
+const roleOptions: RadioOption<"PATIENT" | "DOCTOR">[] = [
+  { label: "Patient", value: "PATIENT" },
+  { label: "Doctor", value: "DOCTOR" },
+];
   const [modalVisible, setModalVisible] = useState(false);
   const [specialization, setSpecialization] = useState("");
   const specializations = [
@@ -117,6 +117,7 @@ export default function Register() {
                 placeholder="Email"
                 placeholderTextColor="#fff"
                 value={email}
+                autoCapitalize="none"
                 onChangeText={setEmail}
               />
               <TextInput
@@ -124,6 +125,7 @@ export default function Register() {
                 placeholder="Username"
                 placeholderTextColor="#fff"
                 value={username}
+                autoCapitalize="none"
                 onChangeText={setUsername}
               />
 
