@@ -23,12 +23,8 @@ export default function Register() {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [pSecure, setPSecure] = useState(true);
-  const [cpSecure, setCPSecure] = useState(true);
-  const [isEnabled, setIsEnabled] = useState(false);
   const [role, setRole] = useState("patient");
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
   const roleOptions: RadioOption[] = [
     { label: "Patient", value: "PATIENT" },
     { label: "Doctor", value: "DOCTOR" },
