@@ -15,6 +15,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import RadioGroup, { RadioOption } from "../../../components/RadioGroup";
 import { BlurView } from "expo-blur";
+import { router } from "expo-router";
 
 export default function Register() {
   const [username, setUsername] = useState("");
@@ -45,6 +46,14 @@ export default function Register() {
     "Orthopedist",
   ];
   const locked = role !== "DOCTOR";
+  const isDisabled =
+  !username ||
+  !firstName ||
+  !lastName ||
+  !email ||
+  !password ||
+  (role === "DOCTOR" && !specialization);
+
 
   const handleRegister = () => {
   const payload = {
@@ -56,7 +65,10 @@ export default function Register() {
   role,
   specialization: role === "DOCTOR" ? specialization : null,
 }
-    console.log("Registering user with data:", payload);};
+    console.log("Registering user with data:", payload);
+    router.push("/auth/login");
+
+};
 
   return (
     <LinearGradient colors={["#1e40af", "#312e81"]} style={{ flex: 1 }}>
@@ -207,18 +219,11 @@ export default function Register() {
               </Modal>
             </View>
             <TouchableOpacity
-              className="bg-white w-[30%] mx-auto mt-6 py-3 rounded-lg"
-              onPress={() =>
-                console.log(
-                  firstName,
-                  lastName,
-                  email,
-                  username,
-                  password,
-                  role,
-                  specialization
-                )
-              }
+              className={`w-[30%] mx-auto mt-6 py-3 rounded-lg ${
+    isDisabled ? "bg-white/50" : "bg-white"
+  }`}
+              onPress={() =>handleRegister()}
+              disabled={isDisabled}
             >
               <Text className="text-indigo-600 text-center text-lg font-bold">
                 Register
