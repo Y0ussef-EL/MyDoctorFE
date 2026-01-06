@@ -53,17 +53,17 @@ const roleOptions: RadioOption<"PATIENT" | "DOCTOR">[] = [
 
   const handleRegister = () => {
   const payload = {
-  username,
-  firstName,
-  lastName,
-  email,
-  password,
-  role,
-  specialization: role === "DOCTOR" ? specialization : null,
-}
-    console.log("Registering user with data:", payload);
-    router.replace("/auth/login");
+    username,
+    firstName,
+    lastName,
+    email,
+    password,
+    role,
+    specialization: role === "DOCTOR" ? specialization : null,
+  };
 
+
+  router.push("/auth/login");
 };
 
   return (

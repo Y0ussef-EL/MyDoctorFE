@@ -12,12 +12,29 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useAuthStore } from "@/store/auth.store";
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [secure, setSecure] = useState(true);
   const router = useRouter();
+
+  const login = useAuthStore((state) => state.login); 
+  const handleLogin = async() => {
+    try {
+      const role = await login(username, password);
+      if (role === "DOCTOR") {
+        router.replace("/(doctor)" as any);
+    } else {
+      router.replace("/(patient)" as any);
+    }
+    } catch (error) {
+      alert("Login failed. Please check your credentials.");
+    }
+  };
+  
+
 
   return (
     <LinearGradient colors={["#1e40af", "#312e81"]} style={{ flex: 1 }}>
@@ -75,7 +92,7 @@ export default function Login() {
 
               <TouchableOpacity
                 className="bg-white mt-6 py-3 rounded-lg"
-                onPress={() => console.log(username, password)}
+                onPress={handleLogin}
               >
                 <Text className="text-indigo-600 text-center text-lg font-bold">
                   Login
