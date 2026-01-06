@@ -1,13 +1,21 @@
+import { storage } from "@/lib/storage";
 import axios from "axios";
-import { storage } from "../lib/storage";
 
 const api = axios.create({
   baseURL: "http://192.168.68.103:8080/",
   headers: { "Content-Type": "application/json" },
 });
 
+const TOKEN_KEY = "TOKEN_KEY";
+
 api.interceptors.request.use(
   async (config) => {
+    const token = await storage.getToken(TOKEN_KEY);
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
     console.log("AXIOS REQUEST");
     console.log("URL:",  config.url);
     console.log("METHOD:", config.method);

@@ -64,6 +64,7 @@ export default function Login() {
                 className="mb-4 border-b border-white text-white mx-4 py-3"
                 placeholder="Username"
                 placeholderTextColor="#fff"
+                autoCapitalize="none"
                 value={username}
                 onChangeText={setUsername}
               />
@@ -73,6 +74,7 @@ export default function Login() {
                   className="mb-4 border-b border-white text-white mx-4 py-3"
                   placeholder="Password"
                   placeholderTextColor="#fff"
+                  autoCapitalize="none"
                   secureTextEntry={secure}
                   value={password}
                   onChangeText={setPassword}

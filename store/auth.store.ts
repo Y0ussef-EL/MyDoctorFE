@@ -2,11 +2,10 @@ import { create } from "zustand";
 import { storage } from "../lib/storage";
 import { authService } from "../services/auth.service";
 import { Role } from "../types/auth.types";
-import {jwtDecode} from "jwt-decode";
 
 const TOKEN_KEY = "TOKEN_KEY";
 
-interface AuthState {
+export interface AuthState {
   userRole: Role | null;
   isAuthenticated: boolean;
   loading: boolean;
@@ -16,10 +15,6 @@ interface AuthState {
   bootstrap: () => Promise<void>;
 }
 
-interface JwtPayload{
-  sub: string;
-  role: "DOCTOR" | "PATIENT";
-}
 
 export const useAuthStore = create<AuthState>((set) => ({
   userRole: null,
@@ -28,17 +23,18 @@ export const useAuthStore = create<AuthState>((set) => ({
 
   login: async (username, password) => {
     const res = await authService.login({ username, password });
-    const { token } = res.data;
-
-  const decoded = jwtDecode<JwtPayload>(token);
+    const { token, role } = res.data;
     await storage.setToken(TOKEN_KEY, token);
 
     set({
-      userRole: decoded.role,
+      userRole: role,
       isAuthenticated: true,
       loading: false,
     });
-    return decoded.role;
+
+    return role;
+
+  
   },
 
   logout: async () => {
@@ -47,6 +43,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({
       userRole: null,
       isAuthenticated: false,
+      loading: false,
     });
   },
 

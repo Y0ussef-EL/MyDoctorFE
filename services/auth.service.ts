@@ -11,7 +11,6 @@ export const authService = {
   login: (data: LoginRequest) =>
     api.post(`${AUTH_PATH}/login`, data),
 
-  //me endpoint to be emplemented depending on role
-  me: () => api.get(`${SERVICE_PATH}/me`),
+  me: () => api.get(`${AUTH_PATH}/me`),
 
 };
