@@ -25,7 +25,7 @@ export default function Login() {
     try {
       const role = await login(username, password);
       if (role === "DOCTOR") {
-        router.replace("/(doctor)" as any);
+        router.replace("/(doctor)/(docTabs)/home" as any);
     } else {
       router.replace("/(patient)" as any);
     }

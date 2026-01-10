@@ -1,5 +1,5 @@
-import { Redirect, Stack } from "expo-router";
 import { useAuthStore } from "@/store/auth.store";
+import { Redirect, Stack } from "expo-router";
 
 export default function DoctorLayout() {
   const { isAuthenticated, userRole, loading } = useAuthStore();
@@ -11,11 +11,8 @@ export default function DoctorLayout() {
   }
 
   return (
-    <Stack
-      screenOptions={{
-        headerShown: false,
-        animation: "fade",
-      }}
-    />
+    <Stack screenOptions={{ headerShown: false, animation: "fade"}}>
+      <Stack.Screen name="(docTabs)" />
+    </Stack>
   );
 }
