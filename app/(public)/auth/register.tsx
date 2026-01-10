@@ -1,21 +1,22 @@
+import { useAuthStore } from "@/store/auth.store";
+import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
-import { Eye, EyeOff, Ellipsis } from "lucide-react-native";
+import { router } from "expo-router";
+import { Ellipsis, Eye, EyeOff } from "lucide-react-native";
 import { useState } from "react";
 import {
+  FlatList,
   KeyboardAvoidingView,
+  Modal,
   Platform,
   ScrollView,
   Text,
   TextInput,
   TouchableOpacity,
   View,
-  Modal,
-  FlatList,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import RadioGroup, { RadioOption } from "../../../components/RadioGroup";
-import { BlurView } from "expo-blur";
-import { router } from "expo-router";
 
 export default function Register() {
   const [username, setUsername] = useState("");
@@ -25,6 +26,7 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [pSecure, setPSecure] = useState(true);
   const [role, setRole] = useState<"PATIENT" | "DOCTOR">("PATIENT");
+  const register = useAuthStore((state) => state.register);
 const roleOptions: RadioOption<"PATIENT" | "DOCTOR">[] = [
   { label: "Patient", value: "PATIENT" },
   { label: "Doctor", value: "DOCTOR" },
@@ -51,19 +53,25 @@ const roleOptions: RadioOption<"PATIENT" | "DOCTOR">[] = [
   (role === "DOCTOR" && !specialization);
 
 
-  const handleRegister = () => {
-  const payload = {
-    username,
-    firstName,
-    lastName,
-    email,
-    password,
-    role,
-    specialization: role === "DOCTOR" ? specialization : null,
-  };
+  const handleRegister = async () => {
+  try {
+    await register({
+      username,
+      firstName,
+      lastName,
+      email,
+      password,
+      role,
+      specialization: role === "DOCTOR" ? specialization : null,
+    });
 
-
-  router.push("/auth/login");
+    router.replace("/auth/login");
+  } catch (e: any) {
+    alert(
+      e?.response?.data?.message ??
+        "Registration failed. Please try again."
+    );
+  }
 };
 
   return (

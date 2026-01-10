@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { storage } from "../lib/storage";
 import { authService } from "../services/auth.service";
-import { Role } from "../types/auth.types";
+import { Role, RegisterRequest} from "../types/auth.types";
 
 const TOKEN_KEY = "TOKEN_KEY";
 
@@ -11,6 +11,7 @@ export interface AuthState {
   loading: boolean;
 
   login: (username: string, password: string) => Promise<Role>;
+  register: (data: RegisterRequest) => Promise<void>;
   logout: () => Promise<void>;
   bootstrap: () => Promise<void>;
 }
@@ -35,6 +36,15 @@ export const useAuthStore = create<AuthState>((set) => ({
     return role;
 
   
+  },
+
+  register: async (data) => {
+    try {
+      set({ loading: true });
+      await authService.register(data);
+    } finally {
+      set({ loading: false });
+    }
   },
 
   logout: async () => {
